@@ -7,7 +7,7 @@ const PrimusContext = require('../lib/primus-context');
 const SharedClass = require('strong-remoting/lib/shared-class');
 const SharedMethod = require('strong-remoting/lib/shared-method');
 const expect = require('chai').expect;
-const factory = require('strong-remoting/test/helpers/shared-objects-factory');
+const factory = require('./helpers/shared-objects-factory');
 function NOOP() {}
 
 describe('PrimusAdapter', () => {
