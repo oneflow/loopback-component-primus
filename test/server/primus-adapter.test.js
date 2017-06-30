@@ -2,12 +2,12 @@ const assert = require('assert');
 const extend = require('util')._extend;
 const inherits = require('util').inherits;
 const RemoteObjects = require('strong-remoting/lib/remote-objects');
-const PrimusAdapter = require('../lib/primus-adapter');
-const PrimusContext = require('../lib/primus-context');
+const PrimusAdapter = require('../../lib/primus-adapter');
+const PrimusContext = require('../../lib/primus-context');
 const SharedClass = require('strong-remoting/lib/shared-class');
 const SharedMethod = require('strong-remoting/lib/shared-method');
 const expect = require('chai').expect;
-const factory = require('./helpers/shared-objects-factory');
+const factory = require('../helpers/shared-objects-factory');
 function NOOP() {}
 
 describe('PrimusAdapter', () => {
@@ -17,7 +17,7 @@ describe('PrimusAdapter', () => {
 		remotes = RemoteObjects.create();
 	});
 
-	describe('invoke()', () => {
+	describe('_invoke()', () => {
 		let remotes;
 
 		beforeEach(() => {
@@ -44,7 +44,7 @@ describe('PrimusAdapter', () => {
 			const primusAdapter = getPrimusAdapter({ isStatic: true });
 			const method = remotes.findMethod(name);
 			const ctx = getPrimusContext(method, [], remotes);
-			primusAdapter.invoke(ctx, method, [], () => {
+			primusAdapter._invoke(ctx, method, [], () => {
 				assert(beforeCalled);
 				assert(afterCalled);
 				done();
@@ -77,7 +77,7 @@ describe('PrimusAdapter', () => {
 			const method = remotes.findMethod(name);
 			const ctx = getPrimusContext(method, [], remotes);
 
-			primusAdapter.invoke(ctx, method, [], (err, result) => {
+			primusAdapter._invoke(ctx, method, [], (err, result) => {
 				if (err) {
 					return done(err);
 				}
