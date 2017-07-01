@@ -20,6 +20,7 @@ describe('primusComponent', () => {
 			app = this.app = loopback();
 			app.server = app.listen();
 			configureModelsAndComponent(app, options);
+			app.emit('started');
 			done();
 		};
 	}
