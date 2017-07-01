@@ -19,9 +19,10 @@ describe('primusComponent', () => {
 		return function (done) {
 			app = this.app = loopback();
 			app.server = app.listen();
-			configureModelsAndComponent(app, options);
+			configureModelsAndComponent(app, options)
+				.then(() => done());
+
 			app.emit('started');
-			done();
 		};
 	}
 
@@ -37,6 +38,6 @@ describe('primusComponent', () => {
 			},
 			dataSource: 'db'
 		});
-		primusComponent(app, options);
+		return primusComponent(app, options);
 	}
 });
