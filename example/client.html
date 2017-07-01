@@ -1,23 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <script type="text/javascript" src="http://localhost:3000/primus/primus.js"></script>
-    <script type="text/javascript">
-      var primus = new Primus({
-        url: 'http://localhost:3000',
-      });
+	<meta charset="UTF-8">
+	<title>Title</title>
+	<script type="text/javascript" src="http://localhost:3000/primus/primus.js"></script>
+	<script type="text/javascript">
+		var primus = new Primus({
+			url: 'http://localhost:3000',
+		});
 
-      primus.send('invoke', {
-        methodString: 'color.find',
-        args: { name: 'John' },
-      }, function (err, data) {
-        err && alert('Error from server: ' + err);
-        data && alert('Response from server: ' + JSON.stringify(data));
-      });
 
-    </script>
+		primus.send('invoke', {
+			methodString: 'color.prototype.patchAttributes',
+			args: {
+				id: 1,
+				data: { name: 'black' }
+			},
+		}, function (err, data) {
+			if (err) {
+				return alert('Error from server: ' + JSON.stringify(err));
+			}
+
+			alert('Record updated: ' + JSON.stringify(data));
+
+
+			primus.send('invoke', {
+				methodString: 'color.find',
+				args: {
+					filter: {
+						where: {
+							name: 'black'
+						}
+					}
+				},
+			}, function (err, data) {
+				if (err) return alert('Error from server: ' + JSON.stringify(err));
+
+				alert('Find results: ' + JSON.stringify(data));
+			});
+		});
+
+
+	</script>
 </head>
 <body>
 

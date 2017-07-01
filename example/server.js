@@ -17,5 +17,12 @@ Color.setup();
 
 app.server = app.listen(3000);
 primusComponent(app);
+app.emit('started');
+
+
+app.remotes().before('color.*', function (ctx, next) {
+	console.log('methodString', ctx.methodString);
+	next();
+});
 
 console.log('server started on port 3000');
