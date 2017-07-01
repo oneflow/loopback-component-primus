@@ -1,53 +1,98 @@
-# node-kickstart
-A standardised project to let OneFlow developers quickly kickstart a new Node.js project
+# loopback-component-primus
 
-This setup includes
-- Sample class with sync and async code
-- Unit tests for class
-- Eslint and editorconfig configuration
-- CircleCI build configuration
-- Docker build configuration
-- NPM configuration 
+Primus adapter for loopback. It allows you to call loopback's remote methods via websocket.
 
-It includes some developer conventions:
-- Eslint based on Airbnb with a few overrides (thus, runs on codeclimate)
-- Editorconfig to match eslint 
-- Wallaby configuration for continuous testing
-
-## Run, Testing, Coverage
-
-To start:
-```
-npm start
+## Getting Started
+``` bash
+npm install --save @oneflow/loopback-component-primus
 ```
 
-To test:
-```
-npm test
-```
 
-To run coverage:
-```
-npm run cover
+Add the loopback-component-primus component to the ```server/component-config.json```:
+
+``` json
+"@oneflow/loopback-component-primus": {}
 ```
 
-## Building
+A small change is needed in the ```server/server.js``` file, replace:
+```javascript
+app.start();
+```
 
-This can build on CircleCI. The `circle.yml` script includes everything necessary. 
-The only exception is that you need to set up the CircleCI SSH key to enable write access
-to your github repository. 
+with:
+```javascript
+app.server = app.start();
+```
 
-More info can be found in the [Oneflow's Wiki](https://oneflow.atlassian.net/wiki/display/DEV/CircleCI)
 
-Environment variables required:
-- CODECOV_TOKEN: to enable pushing coverage to codecov.io
-- NPM_TOKEN: to enable use of private @oneflow npms, and publishing to npm
-- DOCKER_USER: to push a docker image
-- DOCKER_PASS: to push a docker image
-- DOCKER_EMAIL: to push a docker image
 
-## QA WebTools
+## Usage
 
-You may want to setup the different QA WebTools that we are using at OneFlow. 
+##### Call remote methods
+The primus client library is exposed at the URL ```http://<LOOPBACK_URL>/primus/primus.js```
+You will need to import it in your html:
+```html
+<script type="text/javascript" src="http://<LOOPBACK_URL>/primus/primus.js"></script>
+```
 
-Visit the [OneFlow's Wiki](https://oneflow.atlassian.net/wiki/display/DEV/QA+webtools) to find out more about those tools.
+Then, in your code:
+```javascript
+const primus = new Primus({
+	url: 'http://<LOOPBACK_URL>',
+});
+```
+
+Now you will be able to call remote methods using ```primus.send('invoke', {...});```
+```javascript
+
+// Call prototype method:
+
+primus.send('invoke', {
+		methodString: 'color.prototype.patchAttributes',
+		args: {
+			id: 1,
+			data: { name: 'black' }
+		},
+	}, function (err, data) {
+		if (err) {
+			return alert('Error from server: ' + JSON.stringify(err));
+		}
+
+		alert('Record updated: ' + JSON.stringify(data));
+	});
+		
+// Call static method:
+primus.send('invoke', {
+		methodString: 'color.find',
+		args: {
+			filter: {
+				where: {
+					name: 'black'
+				}
+			}
+		},
+	}, function (err, data) {
+		if (err) return alert('Error from server: ' + JSON.stringify(err));
+	
+		alert('Find results: ' + JSON.stringify(data));
+	});
+```
+
+##### Remote hooks
+[Operation hooks](https://loopback.io/doc/en/lb3/Operation-hooks.html) will not work with the primus adapter (they work only with the REST adapter).
+We will use the **global remote hooks** that works seamless with all adapters.
+The syntax is slighly different:
+```javascript
+app.remotes().before('user.*', function (ctx, next) {
+	console.log('methodString', ctx.methodString);
+	next();
+});
+
+app.remotes().before('**', function (ctx, next) {
+	console.log('methodString', ctx.methodString);
+	next();
+});
+```
+
+##### Spark 
+You can find the ```spark``` property, in the ```ctx``` object.
