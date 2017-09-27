@@ -6,7 +6,6 @@
 	"main": "index.js",
 	"scripts": {
 		"test": "mocha test/server/**.js",
-		"test:client": "karma start",
 		"posttest": "nsp check",
 		"cover": "nyc --reporter=lcov --reporter=text-lcov npm test",
 		"postcover": "nsp check"
@@ -14,6 +13,7 @@
 	"license": "ISC",
 	"dependencies": {
 		"assert": "1.4.1",
+		"async": "2.5.0",
 		"async-class": "0.4.1",
 		"axios": "0.16.1",
 		"bluebird": "3.4.6",
@@ -34,12 +34,6 @@
 		"eslint-plugin-import": "2.3.0",
 		"has-flag": "2.0.0",
 		"html-webpack-plugin": "2.28.0",
-		"jasmine": "2.6.0",
-		"jasmine-core": "2.6.4",
-		"karma": "1.7.0",
-		"karma-jasmine": "1.1.0",
-		"karma-phantomjs-launcher": "1.0.4",
-		"karma-webpack": "2.0.3",
 		"loopback": "3.8.0",
 		"loopback-boot": "2.24.1",
 		"mocha": "3.1.2",
