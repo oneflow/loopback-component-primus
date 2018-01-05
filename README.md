@@ -79,8 +79,9 @@ primus.send('invoke', {
 ```
 
 ##### Remote hooks
-[Operation hooks](https://loopback.io/doc/en/lb3/Operation-hooks.html) will not work with the primus adapter (they work only with the REST adapter).
-We will use the **global remote hooks** that works seamless with all adapters.
+[Remote hooks](https://loopback.io/doc/en/lb3/Remote-hooks.html) won't work with the primus adapter (they work only with the REST adapter).
+You have to use the **global remote hooks** that works seamless with all adapters.
+Operation hooks will work as normal.
 The syntax is slighly different:
 ```javascript
 app.remotes().before('user.*', function (ctx, next) {
