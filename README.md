@@ -78,22 +78,5 @@ primus.send('invoke', {
 	});
 ```
 
-##### Remote hooks
-[Remote hooks](https://loopback.io/doc/en/lb3/Remote-hooks.html) won't work with the primus adapter (they work only with the REST adapter).
-You have to use the **global remote hooks** that works seamless with all adapters.
-Operation hooks will work as normal.
-The syntax is slighly different:
-```javascript
-app.remotes().before('user.*', function (ctx, next) {
-	console.log('methodString', ctx.methodString);
-	next();
-});
-
-app.remotes().before('**', function (ctx, next) {
-	console.log('methodString', ctx.methodString);
-	next();
-});
-```
-
 ##### Spark 
 You can find the ```spark``` property, in the ```ctx``` object.
