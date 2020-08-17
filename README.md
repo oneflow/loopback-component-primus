@@ -1,3 +1,10 @@
+# Heads Up! 
+
+This library/repository is no longer being maintained. As such, we don't recommend using this in production, but we have left the code-base here for posterity and for those of you who would like to clone the code and maintain it yourself. 
+
+
+---
+
 # loopback-component-primus
 
 Primus adapter for loopback. It allows you to call loopback's remote methods via websocket.
